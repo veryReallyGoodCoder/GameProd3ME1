@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,8 @@ public class RagdollPhysicsScript : MonoBehaviour
 
     [Header("Reference")]
     Rigidbody rb;
-    //public GameObject player;
+
+    public GameObject fartSystem;
     //public Animator animator;
 
     [Header("Movement")]
@@ -14,6 +16,13 @@ public class RagdollPhysicsScript : MonoBehaviour
 
     public float upForce = 600f;
     public float speed = 150f;
+
+    [Header("Camera")]
+    private Vector2 playerMouse;
+
+    public float mouseSensitivity = 10f;
+
+    private float xRotation = 0;
 
     [Header("Jump")]
     private bool jump;
@@ -24,6 +33,8 @@ public class RagdollPhysicsScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         //animator = player.GetComponent<Animator>();
+
+        fartSystem.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -40,7 +51,11 @@ public class RagdollPhysicsScript : MonoBehaviour
 
             rb.AddForce(force * Time.deltaTime, ForceMode.Impulse);
             Debug.Log("up force");
+
         }
+
+        fartSystem.SetActive(jump);
+
 
         //movement
         Vector3 move = new Vector3(playerMove.x, 0, playerMove.y);
@@ -56,6 +71,11 @@ public class RagdollPhysicsScript : MonoBehaviour
         Debug.Log(playerMove);
 
         //animator.SetBool("isWalking", true);
+    }
+
+    public void PlayerCamera(InputAction.CallbackContext ctx)
+    {
+
     }
 
     public void PlayerJump(InputAction.CallbackContext ctx)
