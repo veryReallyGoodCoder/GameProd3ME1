@@ -13,9 +13,13 @@ public class ThrowingStuff : MonoBehaviour
 
     [SerializeField] private float rayDistance = 5f;
     
-    bool equipped;
+    public bool throwing;
 
     GrabbableObject grabbableObject;
+
+    [Header("Sound")]
+    [SerializeField] private AudioSource soundManager;
+    [SerializeField] private AudioClip throwNoise;
 
 
     void Start()
@@ -62,15 +66,21 @@ public class ThrowingStuff : MonoBehaviour
                 }
             }
 
-            equipped = true;
+            throwing = false;
         }
         else if(ctx.action.triggered && grabbableObject != null)
         {
+            
             grabbableObject.ThrowObject();
             grabbableObject = null;
             
-            equipped = false;
+            throwing = true;
+
+            soundManager.clip = throwNoise;
+            soundManager.PlayOneShot(throwNoise);
+
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)

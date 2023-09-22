@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 
 public class RagdollPhysicsScript : MonoBehaviour
 {
+    [Header("Sound")]
+    [SerializeField] private AudioSource soundManager;
+    [SerializeField] private AudioClip fartNoise;
+
 
     [Header("Reference")]
     private Rigidbody rb;
@@ -22,6 +26,9 @@ public class RagdollPhysicsScript : MonoBehaviour
     public float thrust = 150f;
     public float gravity = -9.81f;
 
+    [Header("Health and Damage")]
+    public float playerHealth = 100f;
+    public float damage = 15;
 
     void Start()
     {
@@ -53,10 +60,13 @@ public class RagdollPhysicsScript : MonoBehaviour
 
             rb.AddForce(force * Time.deltaTime, ForceMode.Impulse);
             //Debug.Log("up force");
+            
 
         }
 
         fartSystem.SetActive(jump);
+
+        
    
     }
 
@@ -69,7 +79,22 @@ public class RagdollPhysicsScript : MonoBehaviour
     public void PlayerJump(InputAction.CallbackContext ctx)
     {
         jump = ctx.action.triggered;
+        soundManager.clip = fartNoise;
+        soundManager.Play();
+        if (!jump)
+        {
+            soundManager.Stop();
+        }
         //Debug.Log(jump);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Lemon")
+        {
+            playerHealth -= damage;
+            Debug.Log(playerHealth);
+        }
     }
 
 }
