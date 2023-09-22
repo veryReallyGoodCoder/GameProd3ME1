@@ -41,6 +41,8 @@ public class RagdollPhysicsScript : MonoBehaviour
         //movement
         Vector3 move = transform.forward * playerMove.y + transform.right * playerMove.x;
 
+        //Vector3 move = new Vector3(playerMove.x, 0, playerMove.y);
+
         rb.velocity = move * speed * Time.deltaTime;
 
         //jump        
@@ -50,7 +52,7 @@ public class RagdollPhysicsScript : MonoBehaviour
             force += addThrust;
 
             rb.AddForce(force * Time.deltaTime, ForceMode.Impulse);
-            Debug.Log("up force");
+            //Debug.Log("up force");
 
         }
 
@@ -61,7 +63,7 @@ public class RagdollPhysicsScript : MonoBehaviour
     public void PlayerMovement(InputAction.CallbackContext ctx)
     {
         playerMove = ctx.ReadValue<Vector2>();
-        Debug.Log(playerMove);
+        //Debug.Log(playerMove);
     }
 
     public void PlayerJump(InputAction.CallbackContext ctx)
