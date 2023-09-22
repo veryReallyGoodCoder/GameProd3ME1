@@ -6,7 +6,7 @@ public class RagdollPhysicsScript : MonoBehaviour
 {
 
     [Header("Reference")]
-    Rigidbody rb;
+    private Rigidbody rb;
 
     public GameObject fartSystem;
     //public Animator animator;
@@ -17,25 +17,15 @@ public class RagdollPhysicsScript : MonoBehaviour
     public float upForce = 600f;
     public float speed = 150f;
 
-    [Header("Camera")]
-    //public Transform root;
-    //public ConfigurableJoint hips;
-
-    public Transform cam;
-
-    private Vector2 playerMouse;
-
-    public float mouseSensitivity = 10f;
-
     [Header("Jump")]
     private bool jump;
     public float thrust = 150f;
     public float gravity = -9.81f;
 
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        //animator = player.GetComponent<Animator>();
 
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -49,15 +39,9 @@ public class RagdollPhysicsScript : MonoBehaviour
         rb.AddForce(force, ForceMode.Force);
 
         //movement
-        //Vector3 move = new Vector3(playerMove.x, 0, playerMove.y);
         Vector3 move = transform.forward * playerMove.y + transform.right * playerMove.x;
 
         rb.velocity = move * speed * Time.deltaTime;
-
-        //float targetAngle = MathF.Atan2(move.x, move.z);
-        //hips.transform.rotation = Quaternion.Euler(0, targetAngle, 0);
-
-        //rb.AddForce(playerMove.x, 0, playerMove.y);
 
         //jump        
         if (jump)
@@ -71,27 +55,13 @@ public class RagdollPhysicsScript : MonoBehaviour
         }
 
         fartSystem.SetActive(jump);
-                
+   
     }
 
     public void PlayerMovement(InputAction.CallbackContext ctx)
     {
         playerMove = ctx.ReadValue<Vector2>();
         Debug.Log(playerMove);
-
-        //animator.SetBool("isWalking", true);
-    }
-
-    public void PlayerCamera(InputAction.CallbackContext ctx)
-    {
-        playerMouse = ctx.ReadValue<Vector2>();
-
-        //playerMouse.y = Mathf.Clamp(playerMouse.y, -20, 60);
-
-        /*Quaternion rootRotation = Quaternion.Euler(playerMouse.y, playerMouse.x, 0).normalized;
-        root.rotation = rootRotation;
-
-        hips.targetRotation = Quaternion.Euler(0, playerMouse.x, 0).normalized;*/
     }
 
     public void PlayerJump(InputAction.CallbackContext ctx)
@@ -99,4 +69,5 @@ public class RagdollPhysicsScript : MonoBehaviour
         jump = ctx.action.triggered;
         //Debug.Log(jump);
     }
+
 }
